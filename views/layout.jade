@@ -1,0 +1,20 @@
+doctype 5
+html(ng-app)
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        script(src='/javascripts/angular.min.js')
+        script(src='/javascripts/socket.io.js')
+        script(src='/javascripts/engine.js',type='text/javascript')
+    body
+        block content
+
+        a(href='/auth/twitter') login twitter.
+        .content(ng-controller='TestApp')
+            h2 total count: {{count}}
+            h3
+                span(style='color:green')  Love: {{countLove}}
+                span(style='color:red')  Hate: {{countHate}}
+                span  Love and Hate: {{countMiddle}}
+            div(ng-repeat='t in twitts')
+                p(style='color:{{t.color}}') {{t.user.screen_name}}: {{t.text}}
