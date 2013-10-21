@@ -12,5 +12,6 @@
         "socket.io": "*",
         "oauth": "*",
         "jasmine-node":"*"
-    }
+    },
+    "license": "BSD"
 }

@@ -35,7 +35,7 @@ http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
 
-var OAuth = require('OAuth');
+//var OAuth = require('OAuth');
 var util = require('util');
 /*
  var oauth = new OAuth.OAuth(
