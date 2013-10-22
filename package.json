@@ -1,5 +1,5 @@
 {
-    "name": "application-name",
+    "name": "twitterExplorer",
     "version": "0.0.1",
     "private": true,
     "scripts": {
@@ -7,11 +7,11 @@
     },
     "dependencies": {
         "express": "3.3.5",
-        "jade": "*",
-        "ntwitter": "*",
-        "socket.io": "*",
-        "oauth": "*",
-        "jasmine-node":"*"
+        "jade": "0.35.0",
+        "ntwitter": "0.5.0",
+        "socket.io": "0.9.16",
+        "oauth": "0.9.10",
+        "jasmine-node":"1.11.0"
     },
     "license": "BSD"
 }
