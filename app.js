@@ -80,7 +80,7 @@ app.get('/auth/twitter/callback', function(req, res, next) {
 				} else {
 					req.session.oauth.access_token = oauth_access_token;
 					req.session.oauth.access_token_secret = oauth_access_token_secret;
-					console.log(results);
+					//console.log(results);
 					//console.log(req);
 					var twit = new twitter({
 						consumer_key: "A6x1nzmmmerCCmVN8zTgew",
@@ -92,11 +92,11 @@ app.get('/auth/twitter/callback', function(req, res, next) {
 
 					twit
 						.verifyCredentials(function(err, data) {
-							console.log(err, data);
+							//console.log(err, data);
 						})
 						.updateStatus('Test tweet from ntwitter/' + twitter.VERSION,
 							function(err, data) {
-								console.log(err, data);
+								console.log(err, data?data.toString():"");
 								res.redirect('/');
 							}
 					);
