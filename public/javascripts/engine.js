@@ -12,15 +12,21 @@ function TestApp($scope) {
     $scope.countLove = 0;
     $scope.countHate = 0;
     $scope.countMiddle = 0;
+    $scope.countPass = 0;
     $scope.twitts = [
         {user: {screen_name: 'Test'}, text: 'Text twitt'}
     ];
-    var socket = io.connect('http://localhost:3001');
+    var socket = io.connect();
     window.socket = socket;
     socket.on('newTwitt', function (item) {
         $scope.twitts.push(item);
-        $scope.count++;
-        if ((item.text.indexOf('amor') != -1 || item.text.indexOf('love') != -1) &&
+        if (item && !item.limit) {
+            $scope.count++;
+        }
+        if (item.limit) {
+            $scope.countPass += item.limit.track;
+        }
+        else if ((item.text.indexOf('amor') != -1 || item.text.indexOf('love') != -1) &&
             (item.text.indexOf('odio') != -1 || item.text.indexOf('hate') != -1)) {
             $scope.countMiddle++;
         }

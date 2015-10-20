@@ -1,14 +1,23 @@
 /*
  * GET home page.
  */
-var twitter = require('ntwitter');
-var io = require('socket.io').listen(3001, {log: false});
-exports.index = function (req, res) {
-    res.render('index', { title: 'Express' });
-    if (req.session.oauth) {
-        InitStream(req.session);
-    }
+var twitter = require('twitter');
+var util = require('util');
+var debug = require('debug')('explorer');
+
+
+var io = require('socket.io');
+
+exports.index = function (http) {
+    io = io(http);
+    return function (req, res) {
+        res.render('index', {title: 'Express'});
+        if (req.session.oauth) {
+            InitStream(req.session);
+        }
+    };
 };
+
 var isActive = false;
 var InitStream = function (session) {
     var twit = new twitter({
@@ -18,42 +27,36 @@ var InitStream = function (session) {
         access_token_secret: session.oauth.access_token_secret
     });
 
-
-    twit
-        .verifyCredentials(function (err, data) {
-            //console.log(err, data?data.toString():'');
-        })
-        .updateStatus('Test tweet from ntwitter/' + twitter.VERSION,
-        function (err, data) {
-            //console.log(data);
-        }
-    );
-
-
     if (!isActive) {
-        console.log('init Stream');
+        debug('init Stream');
+
+
         twit.stream(
-            'statuses/filter',
-            {track: ['amor', 'odio', 'love', 'hate']},
+            'statuses/filter.json',
+            {track: "amor,odio,love,hate"}, //['amor', 'odio', 'love', 'hate']},
             function (stream) {
                 stream.on('data', function (data) {
-                    //console.log(data);
-                    //console.log(data.user.screen_name + " : " + data.text);
+                    if (data.user) {
+                        debug(data.user.screen_name + " : " + data.text);
+                    } else {
+                        debug(data);
+                    }
                     io.sockets.emit('newTwitt', data);
                     // throw  new Exception('end');
                 });
                 stream.on('end', function (b) {
-                    console.log('end stream', b.toString());
+                    debug('end stream', arguments);
                     isActive = false;
                     InitStream(session);
                 });
                 stream.on('destroy', function (b) {
-                    console.log('destroy stream', b.toString());
+                    debug('destroy stream', b.toString());
                     isActive = false;
                     InitStream(session);
                 });
             }
         );
         isActive = true;
+
     }
 };

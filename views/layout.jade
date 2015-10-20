@@ -16,5 +16,6 @@ html(ng-app)
                 span(style='color:green')  Love: {{countLove}}
                 span(style='color:red')  Hate: {{countHate}}
                 span  Love and Hate: {{countMiddle}}
+                span  Uncountable tweets: {{countPass}}
             div(ng-repeat='t in twitts')
                 p(style='color:{{t.color}}') {{t.user.screen_name}}: {{t.text}}
